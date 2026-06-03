@@ -25,6 +25,59 @@
 
 #define PLAY_VERSION	"2.0.24.03.04"
 
+#pragma region PacMan Const Vars
+const int DISPLAY_WIDTH = 560;
+const int DISPLAY_HEIGHT = 720;
+const int DISPLAY_SCALE = 1;
+const int GRID_WIDTH = 28;
+const int GRID_HEIGHT = 36;
+const int SEGMENT_HALFSIZE = 10;
+const int SEGMENT_SIZE = 20;
+const int MOVEMENT_TIME = 10;
+
+#pragma region Default Grid Layout
+constexpr int defaultGridSegments[GRID_WIDTH * GRID_HEIGHT] =
+{
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1,
+	1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1,
+	1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1,
+	1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 1,
+	1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1,
+	1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1,
+	1, 3, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 3, 1,
+	1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1,
+	1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1,
+	1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1,
+	1, 1, 1, 1, 1, 1, 2, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 2, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 2, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 2, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 2, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 2, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 2, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 2, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 2, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 2, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 2, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 2, 1, 1, 0, 1, 1, 1, 5, 5, 1, 1, 1, 0, 1, 1, 2, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 2, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1,
+	1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 1,
+	1, 2, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 2, 1,
+	1, 2, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 2, 1,
+	1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1,
+	1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1,
+	1, 3, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 3, 1,
+	1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1,
+	1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+};
+#pragma endregion
+#pragma endregion
+
 #include <cstdint>
 #include <cstdlib>
 #include <cmath> 
@@ -171,6 +224,12 @@ namespace Play
 		float LengthSqr() const { return Dot( *this ); }
 		// Scales this vector to a unit length (with the same direction)
 		void Normalize();
+		// Returns euclidean distance from this vector to the given one
+		float getDistanceTo(Vector2f& other);
+		//Returns manhattan distance from this vector to the given one, accounting for wraparound
+		float getWrappedDistanceTo(Vector2f& other);
+		//Returns grid based manhattan distance from one index to another
+		float getWrappedGridDistanceTo(int nx, int ny, int tx, int ty);
 		// Returns a vector at right angles to this one
 		Vector2f Perpendicular() const;
 		// Returns true if the vector is euivalent to this one within tolerances (read about floating point accuracy!)
@@ -201,7 +260,6 @@ namespace Play
 		{
 			float v[3];
 			struct { float x; float y; float w; };
-			struct { float width; float height; float w; };
 		};
 
 		// Returns the 2D part of the 3D vector
@@ -613,6 +671,25 @@ namespace Play
 		ret.v[0] = -rhs.v[1];
 		ret.v[1] = rhs.v[0];
 		return ret;
+	}
+
+	inline float Vector2f::getDistanceTo(Vector2f& other)
+	{
+		float dx = x - other.x;
+		float dy = y - other.y;
+		return std::sqrt((dx * dx) + (dy * dy));
+	}
+
+	inline float Vector2f::getWrappedDistanceTo(Vector2f& other)
+	{
+		float dx = std::abs(x - other.x);
+		float dy = std::abs(y - other.y);
+
+		float wrapWidth = GRID_WIDTH * SEGMENT_SIZE;
+
+		dx = std::min(dx, wrapWidth - dx);
+
+		return dx + dy;
 	}
 
 	inline float lengthSqr(const Vector2f& v) { return dot(v, v); }
@@ -2138,8 +2215,6 @@ namespace Play
 // own GameObject class heirarchy on the longer term.
 // Note: Play::GameObject and its associated functionality is only included if you #define PLAY_USING_GAMEOBJECT_MANAGER
 //********************************************************************************************************************************
-#ifdef PLAY_USING_GAMEOBJECT_MANAGER
-
 	
 //! \brief Main Namespace for PlayBuffer
 namespace Play
@@ -2201,7 +2276,7 @@ namespace Play
 		int m_id{ -1 };
 
 		// Preventing assignment and copying reduces the potential for bugs
-		GameObject& operator=(const GameObject&) = delete;
+		//GameObject& operator=(const GameObject&) = delete;
 		GameObject(const GameObject&) = delete;
 	};
 
@@ -2301,7 +2376,6 @@ namespace Play
 #endif
 #endif // PLAY_PLAYOBJECT_H
 
-#endif // PLAYPCH_H
 //*******************************************************************
 //*******************************************************************
 #ifdef PLAY_IMPLEMENTATION
@@ -2540,6 +2614,7 @@ using namespace Play;
 // External functions which must be implemented by the user 
 extern void MainGameEntry( int argc, char* argv[] ); 
 extern bool MainGameUpdate( float ); // Called every frame
+void handleAllEntityMovement();
 extern int MainGameExit( void ); // Called on quit
 	
 ULONG_PTR g_pGDIToken = 0;
@@ -2557,7 +2632,7 @@ int WINAPI WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
 	MainGameEntry(__argc, __argv);
 
-	return Play::Window::HandleWindows( hInstance, hPrevInstance, lpCmdLine, nShowCmd, L"PlayBuffer" );
+	return Play::Window::HandleWindows( hInstance, hPrevInstance, lpCmdLine, nShowCmd, L"Pac-Man" );
 }
 
 namespace Play::Window
