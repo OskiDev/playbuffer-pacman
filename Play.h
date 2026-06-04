@@ -26,13 +26,13 @@
 #define PLAY_VERSION	"2.0.24.03.04"
 
 #pragma region PacMan Const Vars
-const int DISPLAY_WIDTH = 560;
-const int DISPLAY_HEIGHT = 720;
+const int DISPLAY_WIDTH = 860;
+const int DISPLAY_HEIGHT = 1020;
 const int DISPLAY_SCALE = 1;
 const int GRID_WIDTH = 28;
 const int GRID_HEIGHT = 36;
-const int SEGMENT_HALFSIZE = 10;
-const int SEGMENT_SIZE = 20;
+const int SEGMENT_SIZE = DISPLAY_WIDTH/GRID_WIDTH;
+const int SEGMENT_HALFSIZE = SEGMENT_SIZE/2;
 const int MOVEMENT_TIME = 10;
 
 #pragma region Default Grid Layout
